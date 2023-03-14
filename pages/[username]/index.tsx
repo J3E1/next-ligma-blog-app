@@ -10,21 +10,27 @@ import { ParsedUrlQuery } from 'querystring';
 
 import PostFeed from '../../components/Post/PostFeed';
 import UserProfile from '../../components/Layout/UserProfile';
-import { getUserByUsername, postToJSON } from '../../libs/firebaseConfig';
+import { auth, getUserByUsername, postToJSON } from '../../libs/firebaseConfig';
 import { Post, UserFirestore } from '../../types';
 import MetaTags from '../../components/Others/MetaTags';
+import { useContext } from 'react';
+import UserContext from '../../libs/context';
 
 export default function UserProfilePage({
 	posts,
 	user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+	const { username } = useContext(UserContext);
+
+	const admin = user?.username === username;
+
 	return (
 		<>
 			<MetaTags title={user?.username} />
 			<main>
 				<UserProfile user={user} />
 
-				<PostFeed posts={posts} admin />
+				<PostFeed posts={posts} admin={admin} />
 			</main>
 		</>
 	);

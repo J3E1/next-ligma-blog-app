@@ -28,13 +28,6 @@ export default function NavBar({ className }: Props) {
 				<div className='flex-none gap-1 sm:gap-4 items-center'>
 					{username && (
 						<>
-							<SignOutButton />
-							<Link
-								href='/admin'
-								className='btn btn-sm sm:btn-md btn-secondary rounded-sm'>
-								Write Posts
-							</Link>
-
 							<Link
 								href={`/${username}`}
 								className='btn btn-sm sm:btn-md btn-ghost btn-circle avatar'>
