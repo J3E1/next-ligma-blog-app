@@ -5,6 +5,7 @@ import { Post } from '../../types';
 
 import md from 'markdown-it';
 import marked from 'marked';
+import { formatDate, formatLocaleStringWithoutSeconds } from '../../libs/utils';
 
 type Props = { post: Post };
 export default function PostContent({ post }: Props) {
@@ -12,8 +13,19 @@ export default function PostContent({ post }: Props) {
 		typeof post.createdAt === 'number'
 			? new Date(post.createdAt)
 			: post.createdAt.toDate();
+	const updatedAt =
+		typeof post.updatedAt === 'number'
+			? new Date(post.updatedAt)
+			: post.updatedAt.toDate();
 
 	const { data, content } = matter(post.content);
+
+	const createdAtString = formatDate(
+		formatLocaleStringWithoutSeconds(createdAt)
+	);
+	const updatedAtString = formatDate(
+		formatLocaleStringWithoutSeconds(updatedAt)
+	);
 
 	return (
 		<>
@@ -22,9 +34,11 @@ export default function PostContent({ post }: Props) {
 				<span className='text-base'>
 					Written by{' '}
 					<Link href={`/${post.username}`} className='link text-blue-700'>
-						@{post.username}{' '}
-					</Link>
-					on {createdAt.toLocaleString()}
+						@{post.username}
+					</Link>{' '}
+					on {createdAtString}
+					{createdAtString !== updatedAtString &&
+						` Updated on ${updatedAtString}`}
 				</span>
 			</div>
 			<div className='bg-base-100 px-4 py-8'>
@@ -37,43 +51,3 @@ export default function PostContent({ post }: Props) {
 		</>
 	);
 }
-
-// function preprocessMarkdown(content: string) {
-// 	// Set up a custom renderer that adds missing header tags
-// 	 const options: MarkedOptions = {
-// 			headerIds: false,
-// 			gfm: true,
-// 			breaks: true,
-// 			sanitize: false,
-// 			smartLists: true,
-// 			smartypants: true,
-// 			xhtml: true,
-// 			// Define a custom function to add missing header tags
-// 			// and wrap text in paragraph tags
-// 			mangle: (
-// 				text: string,
-// 				options: marked.MarkedOptions,
-// 				renderer: marked.Renderer
-// 			) => {
-// 				let lastType = '';
-// 				renderer.heading = (text, level) => {
-// 					lastType = 'heading';
-// 					return `<h${level}>${text}</h${level}>`;
-// 				};
-// 				renderer.paragraph = text => {
-// 					if (lastType === 'heading') {
-// 						lastType = 'text';
-// 						return `<p>${text}</p>`;
-// 					}
-// 					return `<p>${text}</p>`;
-// 				};
-// 				const html = marked.parser([renderer.lex(text)]);
-// 				return html;
-// 			},
-// 		};
-
-// 		// Parse the markdown content using marked with the custom options
-// 		const processedContent = marked(content, options);
-
-// 		return processedContent;
-// }
