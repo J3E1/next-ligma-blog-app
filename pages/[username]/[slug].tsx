@@ -124,12 +124,13 @@ export const getStaticProps: GetStaticProps<{
 	}
 
 	const post = postToJSON(postSnap) as Post;
+	// console.log('🚀 ~ file: [slug].tsx:127 ~ post:', post.createdAt);
 
 	// const { data, content } = matter(fileName);
 
 	return {
 		props: {
-			post,
+			post: { ...post },
 			path,
 		},
 		revalidate: 5000,

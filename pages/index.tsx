@@ -81,7 +81,7 @@ export const getServerSideProps: GetServerSideProps<{
 	const q = query(
 		postsRef,
 		where('published', '==', true),
-		orderBy('createdAt', 'desc'),
+		orderBy('updatedAt', 'desc'),
 		limit(LIMIT_OF_POSTS_PER_PAGE)
 	);
 	const postsData = await getDocs(q);

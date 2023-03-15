@@ -1,29 +1,32 @@
+import { Router } from 'next/router';
+import { useContext, useEffect } from 'react';
+import UserContext from '../../libs/context';
+
+import styles from './LoadMan.module.css';
+// import '../../styles/tailwind.animations.css';
+
 type Props = {};
 export default function SeconderyLoader({}: Props) {
-	return (
-		<div className='fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-75'>
-			<div className='w-16 h-16 border-4 border-t-2 rounded-full animate-spin'></div>
-		</div>
-	);
+	// const [loading, setLoading] = useState(false);
+	const { loading, setLoading } = useContext(UserContext);
+	useEffect(() => {
+		Router.events.on('routeChangeStart', () => setLoading(true));
+		Router.events.on('routeChangeComplete', () => setLoading(false));
+		Router.events.on('routeChangeError', () => setLoading(false));
+		return () => {
+			Router.events.off('routeChangeStart', () => setLoading(true));
+			Router.events.off('routeChangeComplete', () => setLoading(false));
+			Router.events.off('routeChangeError', () => setLoading(false));
+		};
+	}, [setLoading]);
 
+	return loading ? <Loader /> : null;
+}
+function Loader() {
 	return (
-		<div className='transform rotate-45 perspective-1000 border-[3px] border-solid rounded-full w-[48px] h-[48px] text-white'>
-			<div className='relative w-full h-full rounded-full animate-spin'>
-				<div
-					className='absolute w-full h-full rounded-full animate-spin'
-					style={{ animationDelay: '0.4s', transform: 'rotateY(70deg)' }}>
-					<div
-						className='w-full h-full rounded-full shadow-md'
-						style={{ boxShadow: '0.2em 0 0 currentcolor' }}></div>
-				</div>
-				<div
-					className='absolute w-full h-full rounded-full animate-spin'
-					style={{ transform: 'rotateX(70deg)' }}>
-					<div
-						className='w-full h-full rounded-full shadow-md'
-						style={{ boxShadow: ' 0.2em 0 0 currentcolor' }}></div>
-				</div>
-			</div>
+		<div className='fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-80'>
+			{/* <div className='w-16 h-16 border-4 border-t-2 rounded-full animate-spin'></div> */}
+			<div className={styles['load-man']}></div>
 		</div>
 	);
 }

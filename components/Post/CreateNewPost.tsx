@@ -23,7 +23,7 @@ import { Post } from '../../types';
 type Props = {};
 export default function CreateNewPost({}: Props) {
 	const router = useRouter();
-	const { username } = useContext(UserContext);
+	const { username, createPostInFireStore } = useContext(UserContext);
 	const [title, setTitle] = useState('');
 	const [isValid, setIsValid] = useState(
 		title.length > 3 && title.length < 100
@@ -82,31 +82,12 @@ export default function CreateNewPost({}: Props) {
 		setTitle(val);
 	};
 
-	const formSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
+	const formSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const uid = auth.currentUser?.uid as string;
-
-		const userRef = collection(doc(firestore, 'users', uid), 'posts');
-
-		const postRef = doc(userRef, slug);
-
-		const data: Post = {
-			uid,
-			username: username as string,
-			title,
-			slug,
-			heartCount: 0,
-			createdAt: serverTimestamp() as Timestamp,
-			updatedAt: serverTimestamp() as Timestamp,
-			published: false,
-			content: '# Hello',
-		};
-		await setDoc(postRef, data)
-			.then(() => {
-				toast.success('Post Created');
-				router.push(`/admin/${slug}`);
-			})
-			.catch(e => toast.error('Something went wrong!'));
+		router.push(`/admin/${slug}`);
+		createPostInFireStore(slug, title).then(() =>
+			router.push(`/admin/${slug}`)
+		);
 	};
 
 	return (

@@ -2,7 +2,7 @@
 const withPWA = require('next-pwa')({
 	dest: 'public',
 });
-const nextConfig = withPWA({
+const nextConfig = {
 	reactStrictMode: true,
 	images: {
 		remotePatterns: [
@@ -20,6 +20,7 @@ const nextConfig = withPWA({
 			},
 		],
 	},
-});
+};
 
-module.exports = nextConfig;
+module.exports =
+	process.env.NODE_ENV === 'production' ? withPWA(nextConfig) : nextConfig;

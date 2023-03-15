@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useState } from 'react';
 import { formatDate } from '../../libs/utils';
 import { Post } from '../../types';
 
@@ -7,18 +8,17 @@ export default function PostItem({ post, admin }: Props) {
 	const wordCount = post?.content.trim().split(/\s+/g).length;
 	const minutesToRead = (wordCount / 100 + 1).toFixed(0);
 
-	const createdAt =
-		typeof post.updatedAt === 'number'
-			? new Date(post.updatedAt)
-			: post.createdAt.toDate();
-	const createdAtString = formatDate(createdAt.toLocaleDateString());
+	const { updatedAt: uAt } = post;
+	const [updatedAt, setUpdatedAt] = useState<Date>(() =>
+		typeof uAt === 'number' ? new Date(uAt) : uAt.toDate()
+	);
 
 	return (
 		<div className='mb-4 rounded-sm bg-base-100 hover:bg-base-300 shadow-md'>
 			<Link href={`/${post.username}/${post.slug}`} className='card-body'>
 				<div className='mb-1 text-md opacity-75 font-medium flex flex-wrap justify-between'>
 					<h3>By @{post.username}</h3>
-					<h3>{createdAtString}</h3>
+					<h3>{formatDate(updatedAt)}</h3>
 				</div>
 				<h3 className='mb-2 text-xl font-semibold'>
 					<span>{post.title} </span>

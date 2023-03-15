@@ -1,13 +1,21 @@
-export function formatDate(dateString: string): string {
-	const date = new Date(dateString);
+export function formatDate(dateString: Date): string {
+	// const date = new Date(dateString);
 	const today = new Date();
-	const diffTime = Math.abs(today.getTime() - date.getTime());
-	const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+	const diffTime = Math.abs(today.getTime() - dateString.getTime());
+
+	const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+	// console.log('🚀 ~ file: utils.ts:7 ~ formatDate ~ diffDays:', Math.ceil(1.2));
 
 	if (diffDays <= 12) {
-		return `${diffDays} ${diffDays === 1 ? 'day' : 'days'} ago`;
+		return `${
+			diffDays === 0
+				? 'Today'
+				: diffDays === 1
+				? 'Yesterday'
+				: diffDays + ' days ago'
+		}`;
 	} else {
-		return dateString;
+		return dateString.toLocaleDateString();
 	}
 }
 export function formatLocaleStringWithoutSeconds(date: Date): string {

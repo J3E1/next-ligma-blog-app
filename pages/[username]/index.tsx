@@ -28,7 +28,7 @@ export default function UserProfilePage({
 		<>
 			<MetaTags title={user?.username} />
 			<main>
-				<UserProfile user={user} />
+				<UserProfile user={user} admin={admin} />
 
 				<PostFeed posts={posts} admin={admin} />
 			</main>

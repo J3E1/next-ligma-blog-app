@@ -6,6 +6,7 @@ import {
 	ReactNode,
 	useContext,
 } from 'react';
+import toast from 'react-hot-toast';
 import UserContext from '../../libs/context';
 import ThemeChanger from '../Layout/ThemeChanger';
 import SignOutButton from './SignOutButton';

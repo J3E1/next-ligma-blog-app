@@ -5,8 +5,8 @@ type Post = {
 	content: string;
 	published: boolean;
 	slug: string;
-	createdAt: Timestamp;
-	updatedAt: Timestamp;
+	createdAt: Timestamp | number;
+	updatedAt: Timestamp | number;
 	heartCount: number;
 	uid: string;
 	username: string;

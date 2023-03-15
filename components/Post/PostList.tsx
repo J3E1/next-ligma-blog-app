@@ -28,7 +28,7 @@ export default function PostList({}: Props) {
 	return (
 		<>
 			<h1 className='mb-4 text-2xl font-bold'>Manage Your Posts</h1>
-			<PostFeed posts={posts} admin />
+			<PostFeed posts={posts} />
 		</>
 	);
 }
